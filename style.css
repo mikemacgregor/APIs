@@ -1,0 +1,26 @@
+body {
+  margin: 20px;
+}
+.container {
+}
+input[type='checkbox'] {
+  margin-right: 10px;
+}
+input[type='text'] {
+  margin-bottom: 10px;
+}
+.list-group-item {
+  font-size: 2em;
+  text-decoration: none;
+}
+.taskActions {
+  float: right;
+}
+.taskComplete {
+    color: red;
+    text-decoration: line-through !important;
+}
+.taskIncomplete {
+    color: black;
+    text-decoration: none !important;
+}

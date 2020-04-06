@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>COMP1073 Javascript - Assignment 1, To-Do List</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/lumen/bootstrap.min.css">
+<link href="style.css" rel="stylesheet">
+<script src="historyApi.js" async></script>
+<script src="main.js" async></script>
+</head>
+<body class="bg-secondary">
+ <div class="container bg-light border border-primary">
+  <header>
+    <h1>Super Duper Daily To-Do List</h1>
+    <h3>Today is <span id="todaysDate"></span></h3>
+  </header>
+  <main>
+    <div class="row">
+      <div class="col-6">
+        <div class="card border-primary mb-3">
+          <div class="card-header"><h2>Your To-Do List</h2></div>
+          <div class="card-body">
+            <ul class="list-group">
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="card border-primary mb-3">
+          <div class="card-header"><h2>Add A New Task</h2></div>
+          <div class="card-body">
+            <form>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="card border-primary mb-3">
+          <div class="card-header"><h4>This Day In History</h4>
+            <select id="eventType">
+              <option value="Births">Births
+              <option value="Deaths">Deaths
+              <option value="Events">Events
+            </select>
+          </div>
+          <div class="card-body" id="events">
+          </div>
+          <div class="card-footer">Data from <a href="https://wikipedia.org/">Wikipedia</a> via <a href="https://history.muffinlabs.com/">Today in History API</a></div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <p>COMP1073, Assignment 1<br />
+      Mike MacGregor #200232817<br />
+      February 11, 2020</p>
+  </footer>
+  </div><!--end wrapper-->
+</body>
+</html>
