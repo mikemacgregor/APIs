@@ -1,6 +1,26 @@
-// COMP1073 Assignment 1, To-Do List
+// for testing
+// localStorage.clear();
+
+// COMP1073 Assignment 5, To-Do List w/ APIs
 // Mike MacGregor #200232817
-// February 11, 2020
+// April 9, 2020
+
+// when window is ready, update style if we have pre-set localStorage and trigger history the first time
+window.onload = function(){
+  // already have style set in localStorage?
+  let localStyle = localStorage.getItem('style');
+  // console.log(localStyle);
+  if(localStyle == null) {
+    // nothing to do
+  } else if(localStyle.length > 0 && availableStyles.includes(localStyle)) {
+    setStyle(localStyle);
+  } else {
+    // more nothing
+  }
+
+  // today in history data
+  eventType.dispatchEvent(new Event('change'));
+};
 
 // update today's date
 let dateString = document.getElementById('todaysDate');
@@ -44,6 +64,42 @@ addTaskButton.addEventListener('click', function(e) {
 // add eventListener to button to trigger function to add task to the list
 addTaskButton.addEventListener('click', addTaskToList);
 
+// ------------------------
+// any any tasks in storage
+// ------------------------
+let taskList = localStorage.getItem('tasks');
+if(taskList == null) {
+  // do nothing
+} else {
+  // split taskList
+  let tasks = taskList.slice(1).split("|");
+  console.log(tasks);
+  for(let x = (tasks.length-1); x >= 0; x--) {
+    // put task in input box
+    addTaskInput.value = tasks[x];
+    // simulate button click
+    addTaskButton.dispatchEvent(new Event('click'));
+    // triggerEvent(addTaskButton, 'click');
+    // remove task from storage to prevent duplicate (was already there on load)
+    removeTaskFromLocalStorage(tasks[x]);
+  }
+}
+
+// to trigger event on button
+// https://plainjs.com/javascript/events/trigger-an-event-11/
+function triggerEvent(el, type){
+   if ('createEvent' in document) {
+        // modern browsers, IE9+
+        var e = document.createEvent('HTMLEvents');
+        e.initEvent(type, false, true);
+        el.dispatchEvent(e);
+    } else {
+        // IE 8
+        var e = document.createEventObject();
+        e.eventType = type;
+        el.fireEvent('on'+e.eventType, e);
+    }
+}
 
 // ----------------
 // add task to list
@@ -91,6 +147,9 @@ function addTaskToList(e) {
   // add to list
   taskList.prepend(addTaskLi);
 
+  // update local storage for next time
+  addTaskToLocalStorage(addTaskTextInput.value);
+
   // clear text input box
   addTaskTextInput.value = "";
 
@@ -135,9 +194,50 @@ function markComplete(e) {
 function removeTask(e) {
   // get list item this event if referring to
   let taskLi = e.target.closest('li'); // div is the parent, so parent of parent for li
+
+  // update local storage for next time
+  removeTaskFromLocalStorage(taskLi.lastChild.textContent);
+
+  // and remove it from list
   taskLi.remove();
 
 }
+
+// --------------------------
+// save tasks to localStorage
+// --------------------------
+
+function addTaskToLocalStorage(task) {
+  // get current storage, if any
+  let taskList = localStorage.getItem('tasks');
+
+  if(taskList == null) {
+    taskList = '|' + task;
+  } else {
+    taskList = '|' + task + taskList;
+  }
+  localStorage.setItem('tasks',taskList);
+
+  taskList = localStorage.getItem('tasks');
+}
+
+function removeTaskFromLocalStorage(task) {
+  // get current storage, if any
+  let taskList = localStorage.getItem('tasks');
+
+  if(taskList == null) {
+    // nothing to do
+  } else if(taskList == task) {
+    taskList = '';
+    localStorage.setItem('tasks',taskList);
+  } else {
+    taskList = taskList.replace('|'+task, '');
+    localStorage.setItem('tasks',taskList);
+  }
+
+  taskList = localStorage.getItem('tasks');
+}
+
 
 // ----------------
 // today in history (frivolity)
@@ -147,11 +247,6 @@ let events = document.getElementById('events');
 
 // add eventListener to drop-down
 eventType.addEventListener('change', updateEvents);
-
-// fire event the first time page is loaded
-window.onload = function() {
-  eventType.dispatchEvent(new Event('change'));
-};
 
 // function to load history data and display
 function updateEvents(e) {
